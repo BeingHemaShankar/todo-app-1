@@ -1,24 +1,55 @@
-import './App.css';
-import {Component, useEffect, useState } from 'react';
-function App() {
-  
-  const [todos, setTodos] = useState([])
+import { VStack, Text } from "@chakra-ui/react";
+import "./App.css";
+import { useState } from "react";
+import AddTodo from "./components/AddTodo";
+import TodoList from "./components/TodoList";
 
-  useEffect(() => {
-    let newTodos = [
-      {task: 'Buy an iphone', isCompleted: true},
-      {task: 'Buy groceries', isCompleted: false},
-    ]
-    setTodos(newTodos)
-  }, [])
+function App() {
+  const todosList = [
+    { id: 1, text: "Buy eggs" },
+    { id: 2, text: "Walk the dog" },
+    { id: 3, text: "Watch a movie" },
+  ];
+
+  const [todos, setTodos] = useState(todosList);
+
+  function deleteTodo(id) {
+    // IMPLEMENT DELETE TODO
+    const updatedTodoList = todos.filter(todo => {
+      return todo.id !== id
+    })
+    setTodos(updatedTodoList)
+  }
+
+  function addTodo(newTodo) {
+    const updatedTodoList = [...todos, newTodo];
+    setTodos(updatedTodoList)
+    debugger
+    // IMPLEMENT ADD TODOS
+  }
+
+  function editTodo(id, updatedTodo) {
+    // IMPLEMENT EDIT TODO
+    const updatedTodoList = todos.map(todo => {
+      return todo.id === id ? updatedTodo : todo
+    });
+    debugger
+    setTodos(updatedTodoList)
+  }
+
   return (
-    <div className="App">
-      <ul style={{listStyleType: 'none'}}>
-        {todos.map(todo => {
-          return <li>{todo.task}</li>
-        })}
-      </ul>
-    </div>
+    <VStack p={5}>
+      <Text
+        bgGradient="red"
+        bgClip="text"
+        fontSize="6xl"
+        fontWeight="extrabold"
+      >
+        Todo App
+      </Text>
+      <TodoList todos={todos} deleteTodo={deleteTodo} editTodo={editTodo} />
+      <AddTodo addTodo={addTodo} />
+    </VStack>
   );
 }
 
